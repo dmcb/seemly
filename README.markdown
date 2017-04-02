@@ -18,7 +18,7 @@ These instructions will help you set up Seemly.
 
         sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain web.crt
 
-3. Copy `/app/config.json.default` to `/app/config.json` and define Couchbase authentication information in `/app/config.json`
+3. Copy `/app/config.json.example` to `/app/config.json` and define Couchbase authentication information in `/app/config.json`
 
 4. Run `docker-compose up`
 
