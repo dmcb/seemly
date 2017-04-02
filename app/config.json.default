@@ -1,0 +1,9 @@
+{
+    "couchbase": {
+        "server": "db:8091?detailed_errcodes=1",
+        "admin": "admin",
+        "adminPassword": "",
+        "bucket": "seemly",
+        "bucketPassword": ""
+    }
+}
