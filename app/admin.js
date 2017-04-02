@@ -1,7 +1,11 @@
 var db = require('./app.js').bucket;
 var async = require('async');
 
-exports.setup = function (callback) {
+exports.auditSites = function(callback) {
+    callback(null);
+}
+
+exports.setup = function(callback) {
     // Design documents
     var design_docs = {
         sites: {
@@ -23,20 +27,24 @@ exports.setup = function (callback) {
     var manager = db.manager();
     async.forEachOf(design_docs,
         function(design_doc, design_doc_name, callback) {
-            manager.upsertDesignDocument(design_doc_name, design_doc, function(error, result) {
-                if (error) {
-                    callback(error);
-                    return;
-                }
-                callback();
-            });
+            try {
+                manager.upsertDesignDocument(design_doc_name, design_doc, function(error, result) {
+                    if (error) {
+                        callback(error);
+                        return;
+                    }
+                    callback();
+                });
+            } catch (error) {
+                callback(error);
+            }
         },
         function (error) {
             if (error) {
                 callback(error, null);
                 return;
             }
-            callback(null, {message: 'success'});
+            callback(null, 'Couchbase setup successful');
         }
     );
 }
