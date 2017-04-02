@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js",
-    "install": "node app.js setup"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "async": "^2.2.0",
@@ -12,7 +11,6 @@
     "couchbase": "^2.3.0",
     "express": "^4.15.2",
     "morgan": "^1.8.1",
-    "nodemon": "^1.11.0",
     "request": "2.81.0"
   }
 }

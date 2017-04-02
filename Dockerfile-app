@@ -1,12 +1,14 @@
 FROM node:7.8.0
 
+RUN npm install -g nodemon
+
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY app/package.json /usr/src/app/
+COPY app/package.json .
 RUN npm install
-COPY app/. /usr/src/app
+RUN mv node_modules /node_modules
 
 EXPOSE 3001
 
-CMD ["./app.js"]
+CMD ["npm", "start"]

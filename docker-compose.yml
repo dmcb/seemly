@@ -17,6 +17,8 @@ proxy:
 app:
   build: .
   dockerfile: Dockerfile-app
+  volumes:
+  - ./app:/usr/src/app
   expose:
   - "3001"
   links:
