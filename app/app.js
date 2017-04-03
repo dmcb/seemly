@@ -31,6 +31,7 @@ async.retry({times: 5, interval: function(retryCount) {return 1000 * Math.pow(2,
     },
     function(error, result) {
         if (error) {
+            console.error(error);
             console.error('Failed to connect to Couchbase');
             process.exit(1);
         }

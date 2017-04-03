@@ -1,8 +1,12 @@
 var db = require('./app.js').bucket;
 var async = require('async');
+var config = require('./config');
 
 exports.auditSites = function(callback) {
-    callback(null);
+    for (var i in config.sites) {
+        console.log(config.sites[i]);
+    }
+    callback('Audit complete');
 }
 
 exports.setup = function(callback) {

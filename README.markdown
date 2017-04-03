@@ -18,11 +18,15 @@ These instructions will help you set up Seemly.
 
         sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain web.crt
 
-3. Copy `/app/config.json.example` to `/app/config.json` and define Couchbase authentication information in `/app/config.json`
+3. Copy `/app/config.json.example` to `/app/config.json`
 
-4. Run `docker-compose up`
+4. In `app/config.json` define Couchbase authentication information.
 
-5. Set up Couchbase with the authentication information you specified in `/app/config.json` either by visting http://localhost:8091 or running these `curl` commands, replacing everything in {} with values from `/app/config.json`:
+5. In `app/config.json` add your array of sites you wish to show on the dashboard. You can change the list of sites in this file at any time.
+
+6. Run `docker-compose up`
+
+7. Set up Couchbase with the authentication information you specified in `/app/config.json` either by visting http://localhost:8091 or running these `curl` commands, replacing everything in {} with values from `/app/config.json`:
 
         curl -v -X POST http://localhost:8091/pools/default -d memoryQuota=512 -d indexMemoryQuota=512
         curl -v -X POST http://localhost:8091/node/controller/setupServices -d services=kv%2cn1ql%2Cindex
