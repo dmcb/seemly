@@ -12,7 +12,7 @@ These instructions will help you set up Seemly.
 
 ### Installing
 
-1. Place `web.crt` and `web.key` SSL certificate files in /
+1. Place `web.crt` and `web.key` SSL certificate files in `/`.
 
 2. If you are using a self-signed SSL certificate, make your local machine trust that certificate. Here are instructions on MacOS:
 
@@ -24,7 +24,7 @@ These instructions will help you set up Seemly.
 
 5. In `app/config.json` add your array of sites you wish to show on the dashboard. You can change the list of sites in this file at any time.
 
-6. Run `docker-compose up`
+6. Run `docker-compose up`.
 
 7. Set up Couchbase with the authentication information you specified in `/app/config.json` either by visting http://localhost:8091 or running these `curl` commands, replacing everything in {} with values from `/app/config.json`:
 
@@ -35,7 +35,7 @@ These instructions will help you set up Seemly.
 
 ## Usage
 
-[Visit Seemly](https://localhost)
+Visit your Seemly install at [https://localhost](https://localhost).
 
 ## Authors
 
