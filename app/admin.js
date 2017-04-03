@@ -9,7 +9,7 @@ exports.auditSites = function(callback) {
         config.sites,
         function(site, callback) {
             request({
-                uri: 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url=' + site,
+                uri: 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?screenshot=true&url=' + site,
                 method: 'GET'
             },
             function(error, response, body) {
