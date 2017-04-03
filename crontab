@@ -1,1 +1,1 @@
-0 8,20 * * * root docker exec seemly_app_1 ./app.js audit-sites >> /var/log/cron.log 2>&1
+0 8 * * * root docker exec seemly_app_1 ./app.js audit-sites >> /var/log/cron.log 2>&1
