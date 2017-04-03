@@ -17,9 +17,9 @@ morgan.token('remote-user', function(req, res){
 })
 
 // Connect to Couchbase
-async.retry({times: 5, interval: function(retryCount) {return 1000 * Math.pow(2, retryCount);}},
+async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}},
     function(callback) {
-        console.log('Attempting to initialize Couchbase...');
+        console.log('Attempting to connect to Couchbase...');
         var bucket = (new couchbase.Cluster(config.couchbase.server)).openBucket(config.couchbase.bucket, config.couchbase.bucketPassword, function(error) {
             if (error) {
                 callback(error);
@@ -37,7 +37,7 @@ async.retry({times: 5, interval: function(retryCount) {return 1000 * Math.pow(2,
         }
         else {
             // Couchbase is connected
-            console.log('Couchbase initialized');
+            console.log('Couchbase connected');
             module.exports.bucket = result;
             var admin = require('./admin.js');
 
@@ -49,9 +49,10 @@ async.retry({times: 5, interval: function(retryCount) {return 1000 * Math.pow(2,
                     .command('audit-sites')
                     .description('Get site data into Seemly')
                     .action(function () {
+                        cmdValue = true;
                         admin.auditSites(function(error, result) {
                             if (error) {
-                                console.log(error);
+                                console.error(error);
                                 process.exit(1);
                             } else {
                                 console.log(result);
