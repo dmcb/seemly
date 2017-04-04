@@ -1,15 +1,23 @@
 <html>
     <head>
         <title>Seemly</title>
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,400|Chelsea+Market" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet" type="text/css">
     </head>
     <ul>
     {{#audits}}
         <li>
         {{#value}}
-            <img src="data:image/png;base64,{{screenshot}}" alt="{{title}}" />
-            <h2>{{title}}</h2>
-            <span>{{url}}</span>
-            <span>{{score}}</span>
+            <div class="screenshot">
+                <img src="data:image/png;base64,{{screenshot}}" alt="{{title}}" />
+            </div>
+            <div class="site">
+                <h2 class="title">{{title}}</h2>
+                <span class="url">{{url}}</span>
+            </div>
+            <div class="score">
+                <span class="number">{{score}}</span>
+            </div>
         {{/value}}
         </li>
     {{/audits}}
