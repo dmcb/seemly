@@ -10,9 +10,6 @@ var program = require('commander');
 var config = require('./config');
 
 var app = express();
-app.engine('mustache', mustacheExpress());
-app.set('view engine', 'mustache');
-app.set('views', __dirname + '/views');
 
 // Morgan configuration
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms', {skip: function (req, res) { return req.method == 'OPTIONS' }}));
@@ -43,7 +40,6 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
             // Couchbase is connected
             console.log('Couchbase connected');
             module.exports.bucket = result;
-            var admin = require('./admin.js');
 
             // Allow command line input
             if (process.argv[2]) {
@@ -54,7 +50,8 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                     .description('Get site data into Seemly')
                     .action(function () {
                         cmdValue = true;
-                        admin.auditSites(function(error, result) {
+                        var audits = require('./collections/audits');
+                        audits.set(function(error, result) {
                             if (error) {
                                 console.error(error);
                                 process.exit(1);
@@ -74,6 +71,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
             // If no command line input, run the app
             else {
                 // Ensure design docs are in place
+                var admin = require('./helpers/admin.js');
                 admin.setup(function(error, result) {
                     if (error) {
                         console.log(error);
@@ -87,8 +85,14 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                             console.log('App listening on port ' + port);
                         });
 
-                        var audits = require('./collections/audits');
+                        // Set up templating and static files
+                        app.engine('mustache', mustacheExpress());
+                        app.set('view engine', 'mustache');
+                        app.set('views', __dirname + '/views');
+                        app.use(express.static('assets'));
+
                         app.get('/', function (req, res) {
+                            var audits = require('./collections/audits');
                             audits.getLatest(function (error, result) {
                                 if (error) {
                                     return res.status(400).send(error);
