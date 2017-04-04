@@ -87,8 +87,14 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                             console.log('App listening on port ' + port);
                         });
 
+                        var audits = require('./collections/audits');
                         app.get('/', function (req, res) {
-                            res.render('index', { title: 'Hey', message: 'Hello there!' });
+                            audits.getLatest(function (error, result) {
+                                if (error) {
+                                    return res.status(400).send(error);
+                                }
+                                res.render('index', { audits: result });
+                            });
                         })
                     }
                 });

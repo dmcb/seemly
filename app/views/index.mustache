@@ -2,5 +2,16 @@
     <head>
         <title>Seemly</title>
     </head>
-    Hello World!
+    <ul>
+    {{#audits}}
+        <li>
+        {{#value}}
+            <img src="data:image/png;base64,{{screenshot}}" alt="{{title}}" />
+            <h2>{{title}}</h2>
+            <span>{{url}}</span>
+            <span>{{score}}</span>
+        {{/value}}
+        <li>
+    {{/audits}}
+    </ul>
 </html>

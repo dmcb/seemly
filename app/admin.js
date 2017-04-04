@@ -45,14 +45,26 @@ exports.auditSites = function(callback) {
 exports.setup = function(callback) {
     // Design documents
     var design_docs = {
-        sites: {
+        audits: {
             views: {
-                by_sid: {
+                latest: {
                     map: [
                         'function (doc, meta) {',
-                            'if (meta.id.substring(0, 6) == "site::") {',
-                                'emit([doc.sid], doc.sid);',
+                            'if (meta.id.substring(0, 7) == "audit::") {',
+                                'emit([doc.site], {date: doc.date, url: doc.id, title: doc.title, score: doc.ruleGroups.SPEED.score, screenshot: doc.screenshot.data});',
                             '}',
+                        '}'
+                        ].join('\n'),
+                    reduce: [
+                        'function(key, values, rereduce) {',
+                            'var latest_update = {date: 0};',
+                            'for (i in values) {',
+                                'var update = values[i];',
+                                'if (update.date > latest_update.date) {',
+                                     'latest_update = update;',
+                                '}',
+                            '}',
+                            'return latest_update;',
                         '}'
                         ].join('\n')
                 }
