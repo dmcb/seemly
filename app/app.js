@@ -2,13 +2,17 @@
 
 // Dependencies
 var express = require('express');
-var morgan = require('morgan');
-var couchbase = require('couchbase');
-var program = require('commander');
 var async = require('async');
+var couchbase = require('couchbase');
+var morgan = require('morgan');
+var mustacheExpress = require('mustache-express');
+var program = require('commander');
 var config = require('./config');
 
 var app = express();
+app.engine('mustache', mustacheExpress());
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/views');
 
 // Morgan configuration
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms', {skip: function (req, res) { return req.method == 'OPTIONS' }}));
@@ -82,6 +86,10 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                         app.listen(port, function () {
                             console.log('App listening on port ' + port);
                         });
+
+                        app.get('/', function (req, res) {
+                            res.render('index', { title: 'Hey', message: 'Hello there!' });
+                        })
                     }
                 });
             }
