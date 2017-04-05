@@ -40,6 +40,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
             // Couchbase is connected
             console.log('Couchbase connected');
             module.exports.bucket = result;
+            var audits = require('./collections/audits');
 
             // Allow command line input
             if (process.argv[2]) {
@@ -50,8 +51,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                     .description('Get site data into Seemly')
                     .action(function () {
                         cmdValue = true;
-                        var audits = require('./collections/audits');
-                        audits.set(function(error, result) {
+                        audits.auditSites(config.sites, function(error, result) {
                             if (error) {
                                 console.error(error);
                                 process.exit(1);
@@ -71,7 +71,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
             // If no command line input, run the app
             else {
                 // Ensure design docs are in place
-                var admin = require('./helpers/admin.js');
+                var admin = require('./helpers/admin');
                 admin.setup(function(error, result) {
                     if (error) {
                         console.log(error);

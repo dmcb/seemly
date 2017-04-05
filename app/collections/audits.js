@@ -3,23 +3,10 @@ var couchbase = require('couchbase');
 var db = require('../app.js').bucket;
 var request = require('request');
 var uuid = require('uuid');
-var config = require('../config');
 
-exports.getLatest = function(callback) {
-    query = couchbase.ViewQuery.from('audits', 'latest')
-        .group(true)
-        .stale(1);
-    db.query(query, function(error, result) {
-        if (error) {
-            return callback(error);
-        }
-        callback(null, result);
-    });
-}
-
-exports.set = function(callback) {
+exports.auditSites = function(sites, callback) {
     async.each(
-        config.sites,
+        sites,
         function(site, callback) {
             request({
                 uri: 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?screenshot=true&url=' + site,
@@ -53,4 +40,16 @@ exports.set = function(callback) {
             callback(null, 'Audits complete');
         }
     );
+}
+
+exports.getLatest = function(callback) {
+    query = couchbase.ViewQuery.from('audits', 'latest')
+        .group(true)
+        .stale(1);
+    db.query(query, function(error, result) {
+        if (error) {
+            return callback(error);
+        }
+        callback(null, result);
+    });
 }
