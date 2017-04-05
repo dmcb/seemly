@@ -62,6 +62,21 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                         });
                     });
 
+                program
+                    .command('delete-sites')
+                    .description('Delete all site data from Seemly')
+                    .action(function () {
+                        cmdValue = true;
+                        audits.deleteAudits(config.sites, function(error, result) {
+                            if (error) {
+                                console.error(error);
+                                process.exit(1);
+                            }
+                            console.log(result);
+                            process.exit(0);
+                        });
+                    });
+
                 program.parse(process.argv);
                 if (typeof cmdValue === 'undefined') {
                     console.error('No valid command given');
@@ -81,33 +96,47 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
 
                         // Get latest site audits
                         audits.getLatestAudits(function (error, result) {
-                            var latestAudits = result;
                             if (error) {
                                 console.error(error);
                             }
                             else {
-                                // Find new site additions
+                                // Find site additions and deletions
                                 var newSites = config.sites;
-                                for (i in latestAudits) {
-                                    var index = newSites.indexOf(latestAudits[i].value.site);
+                                var deletedSites = [];
+                                for (i in result) {
+                                    var index = newSites.indexOf(result[i].value.site);
                                     if (index > -1) {
                                         newSites.splice(index, 1);
                                     }
+                                    else {
+                                        deletedSites.push(result[i].value.site);
+                                    }
                                 }
 
-                                // Audit any new sites
+                                // Audit any new sites and remove audits of any deleted sites
                                 async.parallel([
                                     function(callback) {
                                         if (newSites.length) {
-                                            console.log('New sites found in config: ' + newSites);
+                                            console.log('Sites added to config: ' + newSites);
                                             sites.auditSites(newSites, function(error, result) {
-                                                audits.getLatestAudits(function(error, result) {
-                                                    if (error) {
-                                                        return callback(error);
-                                                    }
-                                                    latestAudits = result;
-                                                    callback();
-                                                });
+                                                if (error) {
+                                                    return callback(error);
+                                                }
+                                                callback();
+                                            });
+                                        }
+                                        else {
+                                            callback();
+                                        }
+                                    },
+                                    function(callback) {
+                                        if (deletedSites.length) {
+                                            console.log('Sites removed from config: ' + deletedSites);
+                                            audits.deleteAudits(deletedSites, function(error, result) {
+                                                if (error) {
+                                                    return callback(error);
+                                                }
+                                                callback();
                                             });
                                         }
                                         else {
@@ -133,7 +162,12 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                         app.use(express.static('assets'));
 
                                         app.get('/', function (req, res) {
-                                            res.render('index', { audits: latestAudits });
+                                            audits.getLatestAudits(function(error, result) {
+                                                if (error) {
+                                                    return res.status(400).send(error);
+                                                }
+                                                res.render('index', { audits: result });
+                                            });
                                         });
                                     }
                                 });
