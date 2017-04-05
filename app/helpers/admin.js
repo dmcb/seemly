@@ -1,6 +1,8 @@
 var async = require('async');
+var audits = require('../collections/audits');
 var db = require('../app.js').bucket;
 var config = require('../config');
+var sites = require('../collections/sites');
 
 exports.setup = function(callback) {
     // Design documents
@@ -56,4 +58,46 @@ exports.setup = function(callback) {
             callback(null, 'Couchbase setup successful');
         }
     );
+}
+
+exports.syncSiteList = function() {
+    // Get latest site audits
+    audits.getLatestAudits(function (error, result) {
+        if (error) {
+            console.error(error);
+        }
+        else {
+            // Find site additions and deletions
+            var newSites = config.sites;
+            var deletedSites = [];
+            for (i in result) {
+                var index = newSites.indexOf(result[i].value.site);
+                if (index > -1) {
+                    newSites.splice(index, 1);
+                }
+                else {
+                    deletedSites.push(result[i].value.site);
+                }
+            }
+
+            // Audit any new sites
+            if (newSites.length) {
+                console.log('Sites added to config: ' + newSites);
+                sites.auditSites(newSites, function(error, result) {
+                    if (error) {
+                        console.error(error);
+                    }
+                });
+            }
+            // Remove audits of any deleted sites
+            if (deletedSites.length) {
+                console.log('Sites removed from config: ' + deletedSites);
+                audits.deleteAudits(deletedSites, function(error, result) {
+                    if (error) {
+                        console.error(error);
+                    }
+                });
+            }
+        }
+    });
 }

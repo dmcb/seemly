@@ -94,84 +94,28 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                     else {
                         console.log(result);
 
-                        // Get latest site audits
-                        audits.getLatestAudits(function (error, result) {
-                            if (error) {
-                                console.error(error);
-                            }
-                            else {
-                                // Find site additions and deletions
-                                var newSites = config.sites;
-                                var deletedSites = [];
-                                for (i in result) {
-                                    var index = newSites.indexOf(result[i].value.site);
-                                    if (index > -1) {
-                                        newSites.splice(index, 1);
-                                    }
-                                    else {
-                                        deletedSites.push(result[i].value.site);
-                                    }
+                        // Sync site list
+                        admin.syncSiteList();
+
+                        // Grab port from config or supply a default
+                        var port = config.port || 3001;
+                        app.listen(port, function () {
+                            console.log('App listening on port ' + port);
+                        });
+
+                        // Set up templating and static files
+                        app.engine('mustache', mustacheExpress());
+                        app.set('view engine', 'mustache');
+                        app.set('views', __dirname + '/views');
+                        app.use(express.static('assets'));
+
+                        app.get('/', function (req, res) {
+                            audits.getLatestAudits(function(error, result) {
+                                if (error) {
+                                    return res.status(400).send(error);
                                 }
-
-                                // Audit any new sites and remove audits of any deleted sites
-                                async.parallel([
-                                    function(callback) {
-                                        if (newSites.length) {
-                                            console.log('Sites added to config: ' + newSites);
-                                            sites.auditSites(newSites, function(error, result) {
-                                                if (error) {
-                                                    return callback(error);
-                                                }
-                                                callback();
-                                            });
-                                        }
-                                        else {
-                                            callback();
-                                        }
-                                    },
-                                    function(callback) {
-                                        if (deletedSites.length) {
-                                            console.log('Sites removed from config: ' + deletedSites);
-                                            audits.deleteAudits(deletedSites, function(error, result) {
-                                                if (error) {
-                                                    return callback(error);
-                                                }
-                                                callback();
-                                            });
-                                        }
-                                        else {
-                                            callback();
-                                        }
-                                    }
-                                ],
-                                function(error, results) {
-                                    if (error) {
-                                        console.error(error);
-                                    }
-                                    else {
-                                        // Grab port from config or supply a default
-                                        var port = config.port || 3001;
-                                        app.listen(port, function () {
-                                            console.log('App listening on port ' + port);
-                                        });
-
-                                        // Set up templating and static files
-                                        app.engine('mustache', mustacheExpress());
-                                        app.set('view engine', 'mustache');
-                                        app.set('views', __dirname + '/views');
-                                        app.use(express.static('assets'));
-
-                                        app.get('/', function (req, res) {
-                                            audits.getLatestAudits(function(error, result) {
-                                                if (error) {
-                                                    return res.status(400).send(error);
-                                                }
-                                                res.render('index', { audits: result });
-                                            });
-                                        });
-                                    }
-                                });
-                            }
+                                res.render('index', { audits: result });
+                            });
                         });
                     }
                 });
