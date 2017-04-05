@@ -41,6 +41,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
             console.log('Couchbase connected');
             module.exports.bucket = result;
             var audits = require('./collections/audits');
+            var sites = require('./collections/sites');
 
             // Allow command line input
             if (process.argv[2]) {
@@ -51,14 +52,13 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                     .description('Get site data into Seemly')
                     .action(function () {
                         cmdValue = true;
-                        audits.auditSites(config.sites, function(error, result) {
+                        sites.auditSites(config.sites, function(error, result) {
                             if (error) {
                                 console.error(error);
                                 process.exit(1);
-                            } else {
-                                console.log(result);
-                                process.exit(0);
                             }
+                            console.log(result);
+                            process.exit(0);
                         });
                     });
 
@@ -79,27 +79,66 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                     else {
                         console.log(result);
 
-                        // Grab port from config or supply a default
-                        var port = config.port || 3001;
-                        app.listen(port, function () {
-                            console.log('App listening on port ' + port);
-                        });
-
-                        // Set up templating and static files
-                        app.engine('mustache', mustacheExpress());
-                        app.set('view engine', 'mustache');
-                        app.set('views', __dirname + '/views');
-                        app.use(express.static('assets'));
-
-                        app.get('/', function (req, res) {
-                            var audits = require('./collections/audits');
-                            audits.getLatest(function (error, result) {
-                                if (error) {
-                                    return res.status(400).send(error);
+                        // Get latest site audits
+                        audits.getLatestAudits(function (error, result) {
+                            var latestAudits = result;
+                            if (error) {
+                                console.error(error);
+                            }
+                            else {
+                                // Find new site additions
+                                var newSites = config.sites;
+                                for (i in latestAudits) {
+                                    var index = newSites.indexOf(latestAudits[i].value.site);
+                                    if (index > -1) {
+                                        newSites.splice(index, 1);
+                                    }
                                 }
-                                res.render('index', { audits: result });
-                            });
-                        })
+
+                                // Audit any new sites
+                                async.parallel([
+                                    function(callback) {
+                                        if (newSites.length) {
+                                            console.log('New sites found in config: ' + newSites);
+                                            sites.auditSites(newSites, function(error, result) {
+                                                audits.getLatestAudits(function(error, result) {
+                                                    if (error) {
+                                                        return callback(error);
+                                                    }
+                                                    latestAudits = result;
+                                                    callback();
+                                                });
+                                            });
+                                        }
+                                        else {
+                                            callback();
+                                        }
+                                    }
+                                ],
+                                function(error, results) {
+                                    if (error) {
+                                        console.error(error);
+                                    }
+                                    else {
+                                        // Grab port from config or supply a default
+                                        var port = config.port || 3001;
+                                        app.listen(port, function () {
+                                            console.log('App listening on port ' + port);
+                                        });
+
+                                        // Set up templating and static files
+                                        app.engine('mustache', mustacheExpress());
+                                        app.set('view engine', 'mustache');
+                                        app.set('views', __dirname + '/views');
+                                        app.use(express.static('assets'));
+
+                                        app.get('/', function (req, res) {
+                                            res.render('index', { audits: latestAudits });
+                                        });
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
