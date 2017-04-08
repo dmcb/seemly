@@ -13,7 +13,7 @@ exports.setup = function(callback) {
                     map: [
                         'function (doc, meta) {',
                             'if (meta.id.substring(0, 7) == "audit::") {',
-                                'emit([doc.site], {date: doc.date, site: doc.site, url: doc.id, title: doc.title, score: doc.ruleGroups.SPEED.score, screenshot: doc.screenshot.data});',
+                                'emit([doc.site], {date: doc.date, site: doc.site, url: doc.id, title: doc.title, score: doc.ruleGroups.SPEED.score, screenshot: doc.screenshot.data.replace(/_/g,"/").replace(/-/g,"+")});',
                             '}',
                         '}'
                         ].join('\n'),
