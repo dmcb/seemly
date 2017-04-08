@@ -18,7 +18,7 @@ morgan.token('remote-user', function(req, res){
 })
 
 // Connect to Couchbase
-async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}, errorFilter: function(error) {if (error.code == 2) return false; return true;}},
+async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}, errorFilter: function(error) {if (error.code == 44) return true; return false;}},
     function(callback) {
         console.log('Attempting to connect to Couchbase...');
         var bucket = (new couchbase.Cluster(config.couchbase.server)).openBucket(config.couchbase.bucket, config.couchbase.bucketPassword, function(error) {
