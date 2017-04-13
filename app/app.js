@@ -89,33 +89,41 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                 var admin = require('./helpers/admin');
                 admin.setup(function(error, result) {
                     if (error) {
-                        console.log(error);
+                        console.error(error);
+                        process.exit(0);
                     }
                     else {
                         console.log(result);
 
                         // Sync site list
-                        admin.syncSiteList();
+                        admin.syncSiteList(function(error, result) {
+                            if (error) {
+                                console.error(error);
+                                process.exit(0);
+                            }
+                            else {
+                                // All initialized and ready to serve requests
+                                // Grab port from config or supply a default
+                                var port = config.port || 3001;
+                                app.listen(port, function () {
+                                    console.log('App listening on port ' + port);
+                                });
 
-                        // Grab port from config or supply a default
-                        var port = config.port || 3001;
-                        app.listen(port, function () {
-                            console.log('App listening on port ' + port);
-                        });
+                                // Set up templating and static files
+                                app.engine('mustache', mustacheExpress());
+                                app.set('view engine', 'mustache');
+                                app.set('views', __dirname + '/views');
+                                app.use(express.static('assets'));
 
-                        // Set up templating and static files
-                        app.engine('mustache', mustacheExpress());
-                        app.set('view engine', 'mustache');
-                        app.set('views', __dirname + '/views');
-                        app.use(express.static('assets'));
-
-                        app.get('/', function (req, res) {
-                            audits.getLatestAudits(function(error, result) {
-                                if (error) {
-                                    return res.status(400).send(error);
-                                }
-                                res.render('index', { audits: result });
-                            });
+                                app.get('/', function (req, res) {
+                                    audits.getLatestAudits(function(error, result) {
+                                        if (error) {
+                                            return res.status(400).send(error);
+                                        }
+                                        res.render('index', { audits: result });
+                                    });
+                                });
+                            }
                         });
                     }
                 });

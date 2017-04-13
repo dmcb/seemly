@@ -36,68 +36,101 @@ exports.setup = function(callback) {
 
     // Insert or update design documents
     var manager = db.manager();
-    async.forEachOf(design_docs,
-        function(design_doc, design_doc_name, callback) {
-            try {
-                manager.upsertDesignDocument(design_doc_name, design_doc, function(error, result) {
+
+    async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}},
+        function(callback) {
+            console.log('Attempting to setup Couchbase...');
+            async.forEachOf(design_docs,
+                function(design_doc, design_doc_name, callback) {
+                    try {
+                        manager.upsertDesignDocument(design_doc_name, design_doc, function(error, result) {
+                            if (error) {
+                                callback(error);
+                                return;
+                            }
+                            callback();
+                        });
+                    } catch (error) {
+                        callback(error);
+                    }
+                },
+                function (error) {
                     if (error) {
                         callback(error);
                         return;
                     }
                     callback();
-                });
-            } catch (error) {
-                callback(error);
-            }
+                }
+            );
         },
-        function (error) {
+        function(error, result) {
             if (error) {
-                callback(error, null);
-                return;
+                console.error(error.message);
+                console.error('Failed to setup Couchbase');
+                process.exit(1);
             }
-            callback(null, 'Couchbase setup successful');
+            else {
+                callback(null, 'Couchbase setup successful');
+            }
         }
     );
 }
 
-exports.syncSiteList = function() {
+exports.syncSiteList = function(callback) {
     // Get latest site audits
-    audits.getLatestAudits(function (error, result) {
-        if (error) {
-            console.error(error);
-        }
-        else {
-            // Find site additions and deletions
-            var newSites = config.sites;
-            var deletedSites = [];
-            for (i in result) {
-                var index = newSites.indexOf(result[i].value.site);
-                if (index > -1) {
-                    newSites.splice(index, 1);
+    async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}},
+        function(callback) {
+            console.log('Attempting to sync site list...');
+            audits.getLatestAudits(function (error, result) {
+                if (error) {
+                    callback(error);
                 }
                 else {
-                    deletedSites.push(result[i].value.site);
+                    callback(null, result);
                 }
+            });
+        },
+        function(error, result) {
+            if (error) {
+                callback('Failed to sync site list');
             }
+            else {
+                console.log('Site list retrieved');
 
-            // Audit any new sites
-            if (newSites.length) {
-                console.log('Sites added to config: ' + newSites);
-                sites.auditSites(newSites, function(error, result) {
-                    if (error) {
-                        console.error(error);
+                // Find site additions and deletions
+                var newSites = config.sites;
+                var deletedSites = [];
+                for (i in result) {
+                    var index = newSites.indexOf(result[i].value.site);
+                    if (index > -1) {
+                        newSites.splice(index, 1);
                     }
-                });
-            }
-            // Remove audits of any deleted sites
-            if (deletedSites.length) {
-                console.log('Sites removed from config: ' + deletedSites);
-                audits.deleteAudits(deletedSites, function(error, result) {
-                    if (error) {
-                        console.error(error);
+                    else {
+                        deletedSites.push(result[i].value.site);
                     }
-                });
+                }
+
+                // Audit any new sites
+                if (newSites.length) {
+                    console.log('Sites added to config: ' + newSites);
+                    sites.auditSites(newSites, function(error, result) {
+                        if (error) {
+                            console.error(error);
+                        }
+                    });
+                }
+                // Remove audits of any deleted sites
+                if (deletedSites.length) {
+                    console.log('Sites removed from config: ' + deletedSites);
+                    audits.deleteAudits(deletedSites, function(error, result) {
+                        if (error) {
+                            console.error(error);
+                        }
+                    });
+                }
+
+                callback();
             }
         }
-    });
+    );
 }
