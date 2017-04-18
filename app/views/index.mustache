@@ -17,9 +17,26 @@
                 <h2 class="title">{{title}}</h2>
                 <span class="url">{{url}}</span>
             </div>
-            <div class="score">
-                <span class="number">{{score}}</span>
+            <div class="scores">
+                <ul>
+                  <li class="score">{{score}}</span>
+                  <li class="previous">{{previous}}</span>
+                </ul>
             </div>
+            <ul class="historical">
+                <li class="max">
+                  <span class="label">Highest score</span>
+                  <span class="value">{{max_score}}</span>
+                  <span class="label">reached on</span>
+                  <span class="date">{{max_score_date}}</span>
+                </li>
+                <li class="min">
+                  <span class="label">Lowest score</span>
+                  <span class="value">{{min_score}}</span>
+                  <span class="label">reached on</span>
+                  <span class="date">{{min_score_date}}</span>
+                </li>
+            </ul>
         </li>
     {{/audits}}
     </ul>
