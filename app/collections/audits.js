@@ -2,18 +2,6 @@ var async = require('async');
 var couchbase = require('couchbase');
 var db = require('../app.js').bucket;
 
-exports.getLatestAudits = function(callback) {
-    query = couchbase.ViewQuery.from('audits', 'latest')
-        .group(true)
-        .stale(1);
-    db.query(query, function(error, result) {
-        if (error) {
-            return callback(error);
-        }
-        callback(null, result);
-    });
-}
-
 exports.deleteAudits = function(sites, callback) {
     async.each(
         sites,
@@ -49,4 +37,28 @@ exports.deleteAudits = function(sites, callback) {
             callback(null, 'Audits deleted');
         }
     );
+}
+
+exports.getLatestAudits = function(callback) {
+    query = couchbase.ViewQuery.from('audits', 'latest')
+        .group(true)
+        .stale(1);
+    db.query(query, function(error, result) {
+        if (error) {
+            return callback(error);
+        }
+        callback(null, result);
+    });
+}
+
+exports.getPreviousAudits = function(callback) {
+    query = couchbase.ViewQuery.from('audits', 'last_week')
+        .group(true)
+        .stale(1);
+    db.query(query, function(error, result) {
+        if (error) {
+            return callback(error);
+        }
+        callback(null, result);
+    });
 }

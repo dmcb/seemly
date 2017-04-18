@@ -29,6 +29,28 @@ exports.setup = function(callback) {
                             'return latest_update;',
                         '}'
                         ].join('\n')
+                },
+                last_week: {
+                    map: [
+                        'function (doc, meta) {',
+                            'if (meta.id.substring(0, 7) == "audit::") {',
+                                'emit([doc.site], {date: doc.date, site: doc.site, url: doc.id, title: doc.title, score: doc.ruleGroups.SPEED.score, screenshot: doc.screenshot.data.replace(/_/g,"/").replace(/-/g,"+")});',
+                            '}',
+                        '}'
+                        ].join('\n'),
+                    reduce: [
+                        'function(key, values, rereduce) {',
+                            'var timeLimit = new Date().getTime() - 604800000;',
+                            'var latest_update = {date: 0};',
+                            'for (i in values) {',
+                                'var update = values[i];',
+                                'if (update.date > latest_update.date && update.date < timeLimit) {',
+                                     'latest_update = update;',
+                                '}',
+                            '}',
+                            'return latest_update;',
+                        '}'
+                        ].join('\n')
                 }
             }
         },
