@@ -5,5 +5,7 @@ window.addEventListener('load', function () {
             .animate({ scrollTop: 0 }, $(document).height()*50, 'linear', function() { scrollCycle(); });
     }
 
-    scrollCycle();
+    setTimeout(function(){
+        scrollCycle();
+    }, 30000);
 });
