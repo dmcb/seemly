@@ -52,7 +52,7 @@ exports.getLatestAudits = function(callback) {
 }
 
 exports.getPreviousAudits = function(callback) {
-    query = couchbase.ViewQuery.from('audits', 'last_week')
+    query = couchbase.ViewQuery.from('audits', 'previous')
         .group(true)
         .stale(1);
     db.query(query, function(error, result) {

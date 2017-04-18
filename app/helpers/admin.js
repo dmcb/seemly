@@ -30,7 +30,7 @@ exports.setup = function(callback) {
                         '}'
                         ].join('\n')
                 },
-                last_week: {
+                previous: {
                     map: [
                         'function (doc, meta) {',
                             'if (meta.id.substring(0, 7) == "audit::") {',
