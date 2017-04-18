@@ -167,6 +167,9 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                     else if (audits[key]) {
                                                         audits[key][dataSets[i]] = results[dataSets[i]][j].value.score;
                                                         audits[key][dataSets[i] + '_date'] = results[dataSets[i]][j].value.date;
+                                                        if (dataSets[i] == 'previous') {
+                                                            audits[key]['change'] = audits[key].score - audits[key].previous;
+                                                        }
                                                     }
                                                 }
                                             }
