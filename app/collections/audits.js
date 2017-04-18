@@ -39,20 +39,8 @@ exports.deleteAudits = function(sites, callback) {
     );
 }
 
-exports.getLatestAudits = function(callback) {
-    query = couchbase.ViewQuery.from('audits', 'latest')
-        .group(true)
-        .stale(1);
-    db.query(query, function(error, result) {
-        if (error) {
-            return callback(error);
-        }
-        callback(null, result);
-    });
-}
-
-exports.getPreviousAudits = function(callback) {
-    query = couchbase.ViewQuery.from('audits', 'previous')
+exports.getAudits = function(callback, type = 'latest') {
+    query = couchbase.ViewQuery.from('audits', type)
         .group(true)
         .stale(1);
     db.query(query, function(error, result) {

@@ -145,7 +145,7 @@ exports.syncSiteList = function(callback) {
     async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1.5, retryCount);}},
         function(callback) {
             console.log('Attempting to sync site list...');
-            audits.getLatestAudits(function (error, result) {
+            audits.getAudits(function (error, result) {
                 if (error) {
                     callback(error);
                 }

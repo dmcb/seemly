@@ -118,7 +118,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                 app.get('/', function (req, res) {
                                     async.parallel({
                                         latest: function(callback) {
-                                            audits.getLatestAudits(function(error, result) {
+                                            audits.getAudits(function(error, result) {
                                                 if (error) {
                                                     callback(error);
                                                 }
@@ -126,12 +126,28 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             });
                                         },
                                         previous: function(callback) {
-                                            audits.getPreviousAudits(function(error, result) {
+                                            audits.getAudits(function(error, result) {
                                                 if (error) {
                                                     callback(error);
                                                 }
                                                 callback(null, result);
-                                            });
+                                            }, 'previous');
+                                        },
+                                        max_score: function(callback) {
+                                            audits.getAudits(function(error, result) {
+                                                if (error) {
+                                                    callback(error);
+                                                }
+                                                callback(null, result);
+                                            }, 'max_score');
+                                        },
+                                        min_score: function(callback) {
+                                            audits.getAudits(function(error, result) {
+                                                if (error) {
+                                                    callback(error);
+                                                }
+                                                callback(null, result);
+                                            }, 'min_score');
                                         }
                                     },
                                     function(error, results) {
@@ -141,7 +157,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                         else {
                                             // Merge data sets into an audits object
                                             var audits = {};
-                                            var dataSets = ['latest', 'previous'];
+                                            var dataSets = ['latest', 'previous', 'max_score', 'min_score'];
                                             for (i in dataSets) {
                                                 for (j in results[dataSets[i]]) {
                                                     var key = results[dataSets[i]][j].key;
@@ -150,6 +166,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                     }
                                                     else if (audits[key]) {
                                                         audits[key][dataSets[i]] = results[dataSets[i]][j].value.score;
+                                                        audits[key][dataSets[i] + '_date'] = results[dataSets[i]][j].value.date;
                                                     }
                                                 }
                                             }
@@ -158,6 +175,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             for (var i in audits) {
                                                 auditArray.push(audits[i]);
                                             }
+                                            console.log(auditArray);
                                             res.render('index', { audits: auditArray });
                                         }
                                     });
