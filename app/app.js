@@ -13,7 +13,7 @@ var app = express();
 
 // Morgan configuration
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms', {skip: function (req, res) { return req.method == 'OPTIONS' }}));
-morgan.token('remote-user', function(req, res){ 
+morgan.token('remote-user', function(req, res){
     if (req.user) { return req.user.id; }
 })
 
@@ -116,11 +116,50 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                 app.use(express.static('assets'));
 
                                 app.get('/', function (req, res) {
-                                    audits.getLatestAudits(function(error, result) {
+                                    async.parallel({
+                                        latest: function(callback) {
+                                            audits.getLatestAudits(function(error, result) {
+                                                if (error) {
+                                                    callback(error);
+                                                }
+                                                callback(null, result);
+                                            });
+                                        },
+                                        previous: function(callback) {
+                                            audits.getPreviousAudits(function(error, result) {
+                                                if (error) {
+                                                    callback(error);
+                                                }
+                                                callback(null, result);
+                                            });
+                                        }
+                                    },
+                                    function(error, results) {
                                         if (error) {
                                             return res.status(400).send(error);
                                         }
-                                        res.render('index', { audits: result });
+                                        else {
+                                            // Merge data sets into an audits object
+                                            var audits = {};
+                                            var dataSets = ['latest', 'previous'];
+                                            for (i in dataSets) {
+                                                for (j in results[dataSets[i]]) {
+                                                    var key = results[dataSets[i]][j].key;
+                                                    if (dataSets[i] == 'latest') {
+                                                        audits[key] = results[dataSets[i]][j].value;
+                                                    }
+                                                    else if (audits[key]) {
+                                                        audits[key][dataSets[i]] = results[dataSets[i]][j].value.score;
+                                                    }
+                                                }
+                                            }
+                                            // Process audits object into array for Mustache
+                                            var auditArray = [];
+                                            for (var i in audits) {
+                                                auditArray.push(audits[i]);
+                                            }
+                                            res.render('index', { audits: auditArray });
+                                        }
                                     });
                                 });
                             }

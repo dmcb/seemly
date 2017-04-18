@@ -10,7 +10,6 @@
     <ul>
     {{#audits}}
         <li>
-        {{#value}}
             <div class="screenshot">
                 <img src="data:image/jpeg;base64,{{screenshot}}" alt="{{title}}" />
             </div>
@@ -21,7 +20,6 @@
             <div class="score">
                 <span class="number">{{score}}</span>
             </div>
-        {{/value}}
         </li>
     {{/audits}}
     </ul>
