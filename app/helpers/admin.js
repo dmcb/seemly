@@ -51,6 +51,48 @@ exports.setup = function(callback) {
                             'return latest_update;',
                         '}'
                         ].join('\n')
+                },
+                max_score: {
+                    map: [
+                        'function (doc, meta) {',
+                            'if (meta.id.substring(0, 7) == "audit::") {',
+                                'emit([doc.site], {date: doc.date, site: doc.site, score: doc.ruleGroups.SPEED.score});',
+                            '}',
+                        '}'
+                        ].join('\n'),
+                    reduce: [
+                        'function(key, values, rereduce) {',
+                            'var max_score = {date:9999999999999, score: 0};',
+                            'for (i in values) {',
+                                'var update = values[i];',
+                                'if (update.score >= max_score.score && update.date < max_score.date) {',
+                                     'max_score = update;',
+                                '}',
+                            '}',
+                            'return max_score;',
+                        '}'
+                        ].join('\n')
+                },
+                min_score: {
+                    map: [
+                        'function (doc, meta) {',
+                            'if (meta.id.substring(0, 7) == "audit::") {',
+                                'emit([doc.site], {date: doc.date, site: doc.site, score: doc.ruleGroups.SPEED.score});',
+                            '}',
+                        '}'
+                        ].join('\n'),
+                    reduce: [
+                        'function(key, values, rereduce) {',
+                            'var min_score = {date:9999999999999, score: 100};',
+                            'for (i in values) {',
+                                'var update = values[i];',
+                                'if (update.score <= min_score.score && update.date < min_score.date) {',
+                                     'min_score = update;',
+                                '}',
+                            '}',
+                            'return min_score;',
+                        '}'
+                        ].join('\n')
                 }
             }
         },
