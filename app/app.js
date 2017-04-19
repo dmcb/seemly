@@ -194,23 +194,29 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             auditArray = _.sortBy(auditArray, [function(o) {
                                                 return -o.score;
                                             }]);
-                                            for (i in auditArray) {
-                                                auditArray[i]['rank'] = i;
+                                            // Assign ranks
+                                            for (var i in auditArray) {
+                                                auditArray[i]['rank'] = parseInt(i)+1;
+                                                console.log(auditArray[i]['rank']);
                                             }
+                                            // Sort to get previous ranks
                                             var previousRank = _.sortBy(auditArray, [function(o) {
                                                 return -o.previous;
                                             }]);
-                                            for (i in previousRank) {
-                                                auditArray[previousRank[i].rank]['rank_previous'] = i;
-                                                auditArray[previousRank[i].rank]['rank_change'] = previousRank[i].rank - i;
-                                                if (auditArray[previousRank[i].rank]['rank_change'] > 0) {
-                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'positive';
+                                            // Assign previous ranks and set change and trend values
+                                            for (var i in previousRank) {
+                                                var index = previousRank[i].rank-1;
+                                                console.log(index);
+                                                auditArray[index]['rank_previous'] = parseInt(i)+1;
+                                                auditArray[index]['rank_change'] = previousRank[i].rank - (parseInt(i)+1);
+                                                if (auditArray[index]['rank_change'] > 0) {
+                                                    auditArray[index]['rank_trend'] = 'positive';
                                                 }
-                                                else if (auditArray[previousRank[i].rank]['rank_change'] < 0) {
-                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'negative';
+                                                else if (auditArray[index]['rank_change'] < 0) {
+                                                    auditArray[index]['rank_trend'] = 'negative';
                                                 }
                                                 else {
-                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'neutral';
+                                                    auditArray[index]['rank_trend'] = 'neutral';
                                                 }
                                             }
 
