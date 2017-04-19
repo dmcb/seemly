@@ -178,6 +178,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                             else {
                                                                 audits[key]['change_trend'] = 'neutral';
                                                             }
+                                                            audits[key]['change'] = Math.abs(audits[key]['change']);
                                                         }
                                                     }
                                                 }
@@ -218,9 +219,9 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                 else {
                                                     auditArray[index]['rank_trend'] = 'neutral';
                                                 }
+                                                auditArray[index]['rank_change'] = Math.abs(auditArray[index]['rank_change']);
                                             }
 
-                                            console.log(auditArray);
                                             res.render('index', { audits: auditArray });
                                         }
                                     });
