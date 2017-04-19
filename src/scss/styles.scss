@@ -1,55 +1,16 @@
-body {
-    margin: 0;
-    font-family: 'Work Sans', sans-serif;
-}
+// Third-party
+@import '../../bower_components/reset-css/_reset';
+@import '../../bower_components/breakpoint-sass/stylesheets/breakpoint';
+@import '../../bower_components/singularity/stylesheets/singularitygs';
+@import '../../bower_components/singularity/stylesheets/singularitygs/helpers/clearfix';
 
-ul {
-    display: block;
-    margin: 0;
-    padding: 0;
-}
+// Variables
+@import 'variables/breakpoints';
+@import 'variables/colours';
+@import 'variables/typography';
 
-li {
-    display: block;
-}
+// Partials
+@import 'partials/elements';
 
-div.panel {
-    background-color: #eee;
-    padding: 1em;
-    display: block;
-    margin: 1em;
-}
-
-div.panel:after {
-    display: table;
-    content: '';
-    clear: both;
-}
-
-div.screenshot {
-    float: left;
-    margin-right: 1em;
-    width: 30%;
-    max-width: 320px;
-}
-
-div.screenshot img {
-    width: 100%;
-}
-
-h2 {
-    font-size: 2em;
-    font-weight: 100;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-div.scores {
-    display: inline-block;
-    font-size: 3em;
-    float: right;
-    border-width: 0.1em;
-    border-style: solid;
-    border-radius: 50%;
-    padding: 0.25em;
-}
+// Layouts
+@import 'layouts/audits';

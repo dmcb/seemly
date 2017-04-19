@@ -4,17 +4,17 @@
         <title>Seemly</title>
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,400|Chelsea+Market" rel="stylesheet">
         <link href="/css/styles.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="/js/scripts.js"></script>
     </head>
     <ul class="audits">
     {{#audits}}
-        <li>
+        <li class="audit">
             <div class="trends">
                 <span class="rank">{{rank}}</span>
                 <span class="trend {{rank_trend}}">{{rank_change}}</span>
-            </div>
-            <div class="panel">
+            </div><div class="panel">
                 <div class="screenshot">
                     <img src="data:image/jpeg;base64,{{screenshot}}" alt="{{title}}" />
                 </div>

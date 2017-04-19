@@ -1,1 +1,124 @@
-body{margin:0;font-family:'Work Sans', sans-serif}ul{display:block;margin:0;padding:0}li{display:block}div.panel{background-color:#eee;padding:1em;display:block;margin:1em}div.panel:after{display:table;content:'';clear:both}div.screenshot{float:left;margin-right:1em;width:30%;max-width:320px}div.screenshot img{width:100%}h2{font-size:2em;font-weight:100;margin-top:0;margin-bottom:0}div.scores{display:inline-block;font-size:3em;float:right;border-width:0.1em;border-style:solid;border-radius:50%;padding:0.25em}
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+  blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+* {
+  box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Work Sans', sans-serif; }
+
+ul {
+  display: block;
+  margin: 0;
+  padding: 0; }
+
+li {
+  display: block; }
+
+h2 {
+  font-size: 2em;
+  font-weight: 100;
+  margin-top: 0;
+  margin-bottom: 0; }
+
+ul.audits li.audit {
+  padding-left: 6em;
+  position: relative;
+  margin-right: 1em; }
+  ul.audits li.audit div.trends {
+    width: 6em;
+    text-align: center;
+    color: #999;
+    margin-left: -6em;
+    display: inline-block;
+    vertical-align: middle; }
+    ul.audits li.audit div.trends span.rank {
+      display: block;
+      font-size: 5em; }
+    ul.audits li.audit div.trends span.trend {
+      position: relative;
+      display: inline-block;
+      font-size: 1.25em; }
+      ul.audits li.audit div.trends span.trend.neutral {
+        display: none; }
+      ul.audits li.audit div.trends span.trend:before {
+        font-family: 'FontAwesome';
+        vertical-align: middle;
+        padding-right: 0.15em; }
+      ul.audits li.audit div.trends span.trend.positive:before {
+        color: #2EB989;
+        content: '\f0d8'; }
+      ul.audits li.audit div.trends span.trend.negative:before {
+        color: #FF5E5E;
+        content: '\f0d7'; }
+  ul.audits li.audit div.panel {
+    padding: 1em;
+    margin: 1em 0;
+    background-color: #EEE;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle; }
+    ul.audits li.audit div.panel:after {
+      display: table;
+      content: '';
+      clear: both; }
+    ul.audits li.audit div.panel div.screenshot {
+      float: left;
+      margin-right: 1em;
+      width: 30%;
+      max-width: 320px; }
+      ul.audits li.audit div.panel div.screenshot img {
+        width: 100%; }
+    ul.audits li.audit div.panel div.scores {
+      display: inline-block;
+      font-size: 3em;
+      float: right;
+      border-width: 0.1em;
+      border-style: solid;
+      border-radius: 50%;
+      padding: 0.25em; }
+
+/*# sourceMappingURL=styles.css.map */
