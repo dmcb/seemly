@@ -173,11 +173,29 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                     }
                                                 }
                                             }
+
                                             // Process audits object into array for Mustache
                                             var auditArray = [];
                                             for (var i in audits) {
                                                 auditArray.push(audits[i]);
                                             }
+
+                                            // Sort to get ranks
+                                            var _ = require('lodash');
+                                            auditArray = _.sortBy(auditArray, [function(o) {
+                                                return -o.score;
+                                            }]);
+                                            for (i in auditArray) {
+                                                auditArray[i]['rank'] = i;
+                                            }
+                                            var previousRank = _.sortBy(auditArray, [function(o) {
+                                                return -o.previous;
+                                            }]);
+                                            for (i in previousRank) {
+                                                auditArray[previousRank[i].rank]['rank_previous'] = i;
+                                                auditArray[previousRank[i].rank]['rank_change'] = previousRank[i].rank - i;
+                                            }
+
                                             console.log(auditArray);
                                             res.render('index', { audits: auditArray });
                                         }
