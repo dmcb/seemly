@@ -4473,3 +4473,10 @@ window.addEventListener('load', function () {
         scrollCycle();
     }, 30000);
 });
+
+$(document).ready(function() {
+    $('span.date').each(function() {
+        var date = $(this).html();
+        $(this).html(moment(date, 'x').format('MMMM D, YYYY'));
+    });
+});
