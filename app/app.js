@@ -209,7 +209,7 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                 var index = previousRank[i].rank-1;
                                                 console.log(index);
                                                 auditArray[index]['rank_previous'] = parseInt(i)+1;
-                                                auditArray[index]['rank_change'] = previousRank[i].rank - (parseInt(i)+1);
+                                                auditArray[index]['rank_change'] = (parseInt(i)+1) - previousRank[i].rank;
                                                 if (auditArray[index]['rank_change'] > 0) {
                                                     auditArray[index]['rank_trend'] = 'positive';
                                                 }
