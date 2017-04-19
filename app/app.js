@@ -169,6 +169,15 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                         audits[key][dataSets[i] + '_date'] = results[dataSets[i]][j].value.date;
                                                         if (dataSets[i] == 'previous') {
                                                             audits[key]['change'] = audits[key].score - audits[key].previous;
+                                                            if (audits[key]['change'] > 0) {
+                                                                audits[key]['change_trend'] = 'positive';
+                                                            }
+                                                            else if (audits[key]['change'] < 0) {
+                                                                audits[key]['change_trend'] = 'negative';
+                                                            }
+                                                            else {
+                                                                audits[key]['change_trend'] = 'neutral';
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -194,6 +203,15 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             for (i in previousRank) {
                                                 auditArray[previousRank[i].rank]['rank_previous'] = i;
                                                 auditArray[previousRank[i].rank]['rank_change'] = previousRank[i].rank - i;
+                                                if (auditArray[previousRank[i].rank]['rank_change'] > 0) {
+                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'positive';
+                                                }
+                                                else if (auditArray[previousRank[i].rank]['rank_change'] < 0) {
+                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'negative';
+                                                }
+                                                else {
+                                                    auditArray[previousRank[i].rank]['rank_trend'] = 'neutral';
+                                                }
                                             }
 
                                             console.log(auditArray);
