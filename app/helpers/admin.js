@@ -34,7 +34,7 @@ exports.setup = function(callback) {
                     map: [
                         'function (doc, meta) {',
                             'if (meta.id.substring(0, 7) == "audit::") {',
-                                'emit([doc.site], {date: doc.date, site: doc.site, score: doc.ruleGroups.SPEED.score});',
+                                'emit([doc.site], {date: doc.date, score: doc.ruleGroups.SPEED.score});',
                             '}',
                         '}'
                         ].join('\n'),
@@ -56,7 +56,7 @@ exports.setup = function(callback) {
                     map: [
                         'function (doc, meta) {',
                             'if (meta.id.substring(0, 7) == "audit::") {',
-                                'emit([doc.site], {date: doc.date, site: doc.site, score: doc.ruleGroups.SPEED.score});',
+                                'emit([doc.site], {date: doc.date, score: doc.ruleGroups.SPEED.score});',
                             '}',
                         '}'
                         ].join('\n'),
@@ -65,8 +65,11 @@ exports.setup = function(callback) {
                             'var max_score = {date:9999999999999, score: 0};',
                             'for (i in values) {',
                                 'var update = values[i];',
-                                'if (update.score >= max_score.score && update.date < max_score.date) {',
-                                     'max_score = update;',
+                                'if (update.score >= max_score.score) {',
+                                    'max_score.score = update.score;',
+                                    'if (update.date < max_score.date) {',
+                                        'max_score.date = update.date;',
+                                    '}',
                                 '}',
                             '}',
                             'return max_score;',
@@ -77,7 +80,7 @@ exports.setup = function(callback) {
                     map: [
                         'function (doc, meta) {',
                             'if (meta.id.substring(0, 7) == "audit::") {',
-                                'emit([doc.site], {date: doc.date, site: doc.site, score: doc.ruleGroups.SPEED.score});',
+                                'emit([doc.site], {date: doc.date, score: doc.ruleGroups.SPEED.score});',
                             '}',
                         '}'
                         ].join('\n'),
@@ -86,8 +89,11 @@ exports.setup = function(callback) {
                             'var min_score = {date:9999999999999, score: 100};',
                             'for (i in values) {',
                                 'var update = values[i];',
-                                'if (update.score <= min_score.score && update.date < min_score.date) {',
-                                     'min_score = update;',
+                                'if (update.score <= min_score.score) {',
+                                     'min_score.score = update.score;',
+                                     'if (update.date < min_score.date) {',
+                                         'min_score.date = update.date;',
+                                     '}',
                                 '}',
                             '}',
                             'return min_score;',
