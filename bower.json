@@ -1,0 +1,16 @@
+{
+  "name": "seemly",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "singularity": "^1.7.1",
+    "reset-css": "^2.0.2011012603",
+    "moment": "^2.11.2"
+  }
+}

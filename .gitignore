@@ -2,3 +2,8 @@
 /persistence/
 /web.crt
 /web.key
+/node_modules/
+/bower_components/
+/.tmp/
+*.css.map
+*.js.map
