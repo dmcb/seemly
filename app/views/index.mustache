@@ -25,26 +25,26 @@
                         <span class="url">{{url}}</span>
                         <ul class="records">
                             <li class="max">
-                                <span class="label">Highest score</span>
+                                <span class="label">Peak of</span>
                                 <span class="value">{{max_score}}</span>
-                                <span class="label">reached on</span>
+                                <span class="label">on</span>
                                 <span class="date">{{max_score_date}}</span>
                             </li>
                             <li class="min">
-                                <span class="label">Lowest score</span>
+                                <span class="label">Low of</span>
                                 <span class="value">{{min_score}}</span>
-                                <span class="label">reached on</span>
+                                <span class="label">on</span>
                                 <span class="date">{{min_score_date}}</span>
                             </li>
                         </ul>
-                    </div
-                    ><div class="scores">
-                        <ul>
-                            <li class="score">{{score}}</span>
-                            <li class="change {{change_trend}}">{{change}}</span>
-                        </ul>
                     </div>
                 </div>
+            </div
+            ><div class="scores">
+                <ul>
+                    <li class="score">{{score}}</span>
+                    <li class="change {{change_trend}}">{{change}}</span>
+                </ul>
             </div>
         </li>
     {{/audits}}

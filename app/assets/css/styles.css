@@ -62,7 +62,7 @@ h2 {
   font-size: 2em;
   font-weight: 100;
   margin-top: 0;
-  margin-bottom: 0; }
+  margin-bottom: 0.25em; }
 
 ul.audits li.audit {
   padding-left: 6em;
@@ -95,8 +95,9 @@ ul.audits li.audit {
         color: #FF5E5E;
         content: '\f0d7'; }
   ul.audits li.audit div.panel {
-    padding: 1em;
-    margin-bottom: 1em;
+    padding: 1em 10em 1em 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     background-color: #EEE;
     display: inline-block;
     width: 100%;
@@ -119,56 +120,54 @@ ul.audits li.audit {
       margin-left: 0;
       margin-right: 0;
       clear: none; }
-      ul.audits li.audit div.panel div.information div.site {
-        padding-right: 8em;
-        display: inline-block;
-        vertical-align: top;
-        width: 100%; }
-        ul.audits li.audit div.panel div.information div.site .title.new:before {
-          content: 'new';
-          background-color: #999;
-          color: #FFF;
-          border-radius: 0.5em;
-          font-size: 0.5em;
-          padding: 0.25em;
-          font-weight: normal;
-          display: inline-block;
-          vertical-align: middle;
-          margin-right: 0.5em; }
-      ul.audits li.audit div.panel div.information div.scores {
-        width: 8em;
-        height: 8em;
-        display: inline-block;
-        margin-left: -8em;
-        border-width: 0.25em;
-        border-style: solid;
-        border-radius: 50%;
+      ul.audits li.audit div.panel div.information div.site .title.new:before {
+        content: 'new';
+        background-color: #999;
+        color: #FFF;
+        border-radius: 0.5em;
+        font-size: 0.5em;
         padding: 0.25em;
-        text-align: center; }
-        ul.audits li.audit div.panel div.information div.scores:before {
-          content: '';
-          display: inline-block;
-          height: 100%;
-          vertical-align: middle;
-          margin-right: -0.4em; }
-        ul.audits li.audit div.panel div.information div.scores > * {
-          display: inline-block;
-          vertical-align: middle; }
-        ul.audits li.audit div.panel div.information div.scores ul {
-          font-size: 3em; }
-          ul.audits li.audit div.panel div.information div.scores ul li.change {
-            font-size: 0.5em; }
-            ul.audits li.audit div.panel div.information div.scores ul li.change.neutral {
-              display: none; }
-            ul.audits li.audit div.panel div.information div.scores ul li.change.positive {
-              color: #2EB989; }
-              ul.audits li.audit div.panel div.information div.scores ul li.change.positive:before {
-                content: '+'; }
-            ul.audits li.audit div.panel div.information div.scores ul li.change.negative {
-              color: #FF5E5E; }
-              ul.audits li.audit div.panel div.information div.scores ul li.change.negative:before {
-                content: '-'; }
+        font-weight: normal;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.5em; }
   ul.audits li.audit:first-child div.panel {
     margin-top: 1em; }
+  ul.audits li.audit:last-child div.panel {
+    margin-bottom: 1em; }
+  ul.audits li.audit div.scores {
+    width: 8em;
+    height: 8em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -9em;
+    border-width: 0.25em;
+    border-style: solid;
+    border-radius: 50%;
+    padding: 0.25em;
+    text-align: center; }
+    ul.audits li.audit div.scores:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin-right: -0.4em; }
+    ul.audits li.audit div.scores > * {
+      display: inline-block;
+      vertical-align: middle; }
+    ul.audits li.audit div.scores ul {
+      font-size: 3em; }
+      ul.audits li.audit div.scores ul li.change {
+        font-size: 0.5em; }
+        ul.audits li.audit div.scores ul li.change.neutral {
+          display: none; }
+        ul.audits li.audit div.scores ul li.change.positive {
+          color: #2EB989; }
+          ul.audits li.audit div.scores ul li.change.positive:before {
+            content: '+'; }
+        ul.audits li.audit div.scores ul li.change.negative {
+          color: #FF5E5E; }
+          ul.audits li.audit div.scores ul li.change.negative:before {
+            content: '-'; }
 
 /*# sourceMappingURL=styles.css.map */
