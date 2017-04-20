@@ -46,7 +46,7 @@ ul.audits {
 
         div.panel {
             padding: 1em;
-            margin: 1em 0;
+            margin-bottom: 1em;
             background-color: $light-grey;
             display: inline-block;
             width: 100%;
@@ -59,38 +59,81 @@ ul.audits {
             }
 
             div.screenshot {
-                float: left;
-                margin-right: 1em;
-                width: 30%;
-                max-width: 320px;
+                @include grid-span(3,1);
 
                 img {
                     width: 100%;
                 }
             }
 
-            div.information div.site .title.new:after {
-                content: 'new';
-                background-color: $dark-grey;
-                color: $white;
-                border-radius: 0.5em;
-                font-size: 0.5em;
-                padding: 0.25em;
-                font-weight: normal;
-                display: inline-block;
-                vertical-align: middle;
-                margin-left: 0.5em;
-            }
+            div.information {
+                @include grid-span(9,4);
 
-            div.scores {
-                display: inline-block;
-                font-size: 3em;
-                float: right;
-                border-width: 0.1em;
-                border-style: solid;
-                border-radius: 50%;
-                padding: 0.25em;
+                div.site {
+                    padding-right: 8em;
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 100%;
+
+                    .title.new:before {
+                        content: 'new';
+                        background-color: $dark-grey;
+                        color: $white;
+                        border-radius: 0.5em;
+                        font-size: 0.5em;
+                        padding: 0.25em;
+                        font-weight: normal;
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin-right: 0.5em;
+                    }
+                }
+
+                div.scores {
+                    width: 8em;
+                    height: 8em;
+                    display: inline-block;
+                    margin-left: -8em;
+                    border-width: 0.25em;
+                    border-style: solid;
+                    border-radius: 50%;
+                    padding: 0.25em;
+                    @include enable-vertical-center();
+                    text-align: center;
+
+                    ul {
+                        font-size: 3em;
+
+                        li.change {
+                            font-size: 0.5em;
+
+                            &.neutral {
+                                display: none;
+                            }
+
+                            &.positive {
+                                color: $green;
+
+                                &:before {
+                                    content: '+';
+                                }
+                            }
+
+                            &.negative {
+                                color: $red;
+
+                                &:before {
+                                    content: '-';
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        }
+
+        &:first-child div.panel {
+            margin-top: 1em;
         }
     }
 }
