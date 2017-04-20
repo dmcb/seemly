@@ -13,6 +13,6 @@ window.addEventListener('load', function () {
 $(document).ready(function() {
     $('span.date').each(function() {
         var date = $(this).html();
-        $(this).html(moment(date, 'x').format('MMMM D, YYYY'));
+        $(this).html(moment(date, 'x').format('YYYY/MM/DD'));
     });
 });

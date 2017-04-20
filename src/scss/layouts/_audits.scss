@@ -60,7 +60,7 @@ ul.audits {
             }
 
             div.screenshot {
-                @include grid-span(3,1);
+                @include grid-span(4,1);
 
                 img {
                     width: 100%;
@@ -68,7 +68,35 @@ ul.audits {
             }
 
             div.information {
-                @include grid-span(9,4);
+                @include grid-span(8,5);
+
+                div.site ul.records li {
+                    display: inline-block;
+                    margin-top: 1.5em;
+
+                    &:first-child {
+                        border-right: 1px $dark-grey solid;
+                        padding-right: 0.5em;
+                        margin-right: 0.5em;
+                    }
+
+                    span.label, span.date {
+                        font-size: 0.75em;
+                    }
+
+                    span.value {
+                        display: block;
+                        font-size: 1.25em;
+                    }
+
+                    &.max span.value {
+                        color: $green;
+                    }
+
+                    &.min span.value {
+                        color: $red;
+                    }
+                }
             }
         }
 
