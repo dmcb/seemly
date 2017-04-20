@@ -163,13 +163,13 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                                     var key = results[dataSets[i]][j].key;
                                                     if (dataSets[i] == 'latest') {
                                                         audits[key] = results[dataSets[i]][j].value;
-                                                        audits[key]['new'] = true;
+                                                        audits[key]['new'] = 'new';
                                                     }
-                                                    else if (audits[key]) {
+                                                    else if (audits[key] && results[dataSets[i]][j].value.score) {
                                                         audits[key][dataSets[i]] = results[dataSets[i]][j].value.score;
                                                         audits[key][dataSets[i] + '_date'] = results[dataSets[i]][j].value.date;
                                                         if (dataSets[i] == 'previous') {
-                                                            audits[key]['new'] = false;
+                                                            audits[key]['new'] = 'existing';
                                                             audits[key]['change'] = audits[key].score - audits[key].previous;
                                                             if (audits[key]['change'] > 0) {
                                                                 audits[key]['change_trend'] = 'positive';
@@ -200,7 +200,6 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             // Assign ranks
                                             for (var i in auditArray) {
                                                 auditArray[i]['rank'] = parseInt(i)+1;
-                                                console.log(auditArray[i]['rank']);
                                             }
                                             // Sort to get previous ranks
                                             var previousRank = _.sortBy(auditArray, [function(o) {
@@ -209,7 +208,6 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             // Assign previous ranks and set change and trend values
                                             for (var i in previousRank) {
                                                 var index = previousRank[i].rank-1;
-                                                console.log(index);
                                                 auditArray[index]['rank_previous'] = parseInt(i)+1;
                                                 auditArray[index]['rank_change'] = (parseInt(i)+1) - previousRank[i].rank;
                                                 if (auditArray[index]['rank_change'] > 0) {

@@ -112,6 +112,17 @@ ul.audits li.audit {
       max-width: 320px; }
       ul.audits li.audit div.panel div.screenshot img {
         width: 100%; }
+    ul.audits li.audit div.panel div.information div.site .title.new:after {
+      content: 'new';
+      background-color: #999;
+      color: #FFF;
+      border-radius: 0.5em;
+      font-size: 0.5em;
+      padding: 0.25em;
+      font-weight: normal;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.5em; }
     ul.audits li.audit div.panel div.scores {
       display: inline-block;
       font-size: 3em;
