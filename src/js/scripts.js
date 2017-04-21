@@ -18,7 +18,7 @@ window.addEventListener('load', function () {
                 registerMouseMoveKillingScroll();
                 registerWindowResizeKillingScroll();
             }
-        }, 5000);
+        }, 30000);
     }
 
     function registerMouseMoveKillingScroll() {
@@ -37,7 +37,7 @@ window.addEventListener('load', function () {
         scrollCycle();
         registerMouseMoveKillingScroll();
         registerWindowResizeKillingScroll();
-    }, 5000);
+    }, 30000);
 });
 
 $(document).ready(function() {
