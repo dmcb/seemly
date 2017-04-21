@@ -11,6 +11,7 @@
   "dependencies": {
     "singularity": "^1.7.1",
     "reset-css": "^2.0.2011012603",
-    "moment": "^2.11.2"
+    "moment": "^2.11.2",
+    "breakpoint-sass": "^2.7.1"
   }
 }

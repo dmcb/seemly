@@ -1,26 +1,25 @@
 ul.audits {
     li.audit {
-        padding-left: 6em;
+        padding-left: 3em;
         position: relative;
         margin-right: 1em;
 
         div.trends {
-            width: 6em;
+            width: 3em;
             text-align: center;
             color: $dark-grey;
-            margin-left: -6em;
+            margin-left: -3em;
             display: inline-block;
             vertical-align: middle;
 
             span.rank {
                 display: block;
-                font-size: 5em;
+                font-size: 2em;
             }
 
             span.trend {
                 position: relative;
                 display: inline-block;
-                font-size: 1.25em;
 
                 &.neutral {
                     display: none;
@@ -45,7 +44,7 @@ ul.audits {
         }
 
         div.panel {
-            padding: 1em 10em 1em 1em;
+            padding: 1em;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             background-color: $light-grey;
@@ -61,41 +60,45 @@ ul.audits {
             }
 
             div.screenshot {
-                @include grid-span(4,1);
-
                 img {
                     width: 100%;
                 }
             }
 
             div.information {
-                @include grid-span(8,5);
+                margin-top: 1em;
 
-                div.site ul.records li {
-                    display: inline-block;
-                    margin-top: 1.5em;
+                div.site {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
 
-                    &:first-child {
-                        border-right: 1px $dark-grey solid;
-                        padding-right: 0.5em;
-                        margin-right: 0.5em;
-                    }
+                    ul.records li {
+                        display: inline-block;
+                        margin-top: 1.5em;
 
-                    span.label, span.date {
-                        font-size: 0.75em;
-                    }
+                        &:first-child {
+                            border-right: 1px $dark-grey solid;
+                            padding-right: 0.5em;
+                            margin-right: 0.5em;
+                        }
 
-                    span.value {
-                        display: block;
-                        font-size: 1.25em;
-                    }
+                        span.label, span.date {
+                            font-size: 0.75em;
+                        }
 
-                    &.max span.value {
-                        color: $green;
-                    }
+                        span.value {
+                            display: block;
+                            font-size: 1.25em;
+                        }
 
-                    &.min span.value {
-                        color: $red;
+                        &.max span.value {
+                            color: $green;
+                        }
+
+                        &.min span.value {
+                            color: $red;
+                        }
                     }
                 }
             }
@@ -129,21 +132,23 @@ ul.audits {
         }
 
         div.scores {
-            width: 8em;
-            height: 8em;
+            width: 4em;
+            height: 4em;
             display: inline-block;
-            vertical-align: middle;
-            margin-left: -9em;
+            vertical-align: top;
+            margin-top: 1em;
+            margin-left: -4em;
             border-width: 0.25em;
             border-style: solid;
             border-radius: 50%;
+            background-color: $light-grey;
             padding: 0.25em;
             @include enable-vertical-center();
             text-align: center;
             box-shadow: 0 0 0.5em $black;
 
             ul {
-                font-size: 3em;
+                font-size: 1.5em;
 
                 li.change {
                     font-size: 0.5em;
@@ -170,5 +175,80 @@ ul.audits {
                 }
             }
         }
+    }
+
+    @include breakpoint($mobile-large) {
+        li.audit {
+            div.panel {
+                padding-right: 6em;
+
+                div.screenshot {
+                    @include grid-span(5,1);
+                }
+
+                div.information {
+                    margin-top: 0;
+                    @include grid-span(7,6);
+                }
+            }
+
+            div.scores {
+                vertical-align: middle;
+                margin-top: 0;
+                margin-left: -5em;
+            }
+        }
+    }
+
+    @include breakpoint($tablet) {
+        li.audit {
+            padding-left: 6em;
+
+            div.trends {
+                width: 6em;
+                margin-left: -6em;
+
+                span.rank {
+                    display: block;
+                    font-size: 5em;
+                }
+
+                span.trend {
+                    font-size: 1.25em;
+                }
+            }
+
+            div.panel {
+                padding-right: 10em;
+            }
+
+            div.scores {
+                width: 8em;
+                height: 8em;
+                margin-left: -9em;
+
+                ul {
+                    font-size: 3em;
+                }
+            }
+        }
+    }
+
+    @include breakpoint($desktop) {
+        li.audit div.panel {
+            div.screenshot {
+                @include grid-span(4,1);
+            }
+
+            div.information {
+                @include grid-span(8,5);
+            }
+        }
+    }
+
+    @include breakpoint($desktop-extra-large) {
+        width: 1920px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
