@@ -6,7 +6,7 @@ window.addEventListener('load', function () {
 
         $('body')
             .animate({ scrollTop: scrollTopToBottom }, timeRemaining, 'linear')
-            .animate({ scrollTop: 0 }, $(document).height()*50, 'linear', scrollCycle);
+            .animate({ scrollTop: 0 }, scrollTopToBottom*50, 'linear', scrollCycle);
     }
 
     function stopScroll(calledBy) {
