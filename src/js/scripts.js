@@ -1,13 +1,43 @@
 window.addEventListener('load', function () {
     function scrollCycle() {
-        $("html, body")
-            .animate({ scrollTop: $(document).height()-$(window).height() }, $(document).height()*50, 'linear')
-            .animate({ scrollTop: 0 }, $(document).height()*50, 'linear', function() { scrollCycle(); });
+        var scrollTopToBottom = $(document).height()-$(window).height();
+        var pixelsToGetToBottom = scrollTopToBottom-$(document).scrollTop();
+        var timeRemaining = pixelsToGetToBottom*50;
+
+        $('body')
+            .animate({ scrollTop: scrollTopToBottom }, timeRemaining, 'linear')
+            .animate({ scrollTop: 0 }, $(document).height()*50, 'linear', scrollCycle);
+    }
+
+    function stopScroll(calledBy) {
+        $('body').stop(true);
+
+        setTimeout(function(){
+            if (!$('body').queue().length) {
+                scrollCycle();
+                registerMouseMoveKillingScroll();
+                registerWindowResizeKillingScroll();
+            }
+        }, 5000);
+    }
+
+    function registerMouseMoveKillingScroll() {
+        $('body').one('mousemove', function() {
+            stopScroll('mousemove');
+        });
+    }
+
+    function registerWindowResizeKillingScroll() {
+        $(window).one('resize', function() {
+            stopScroll('resize');
+        });
     }
 
     setTimeout(function(){
         scrollCycle();
-    }, 30000);
+        registerMouseMoveKillingScroll();
+        registerWindowResizeKillingScroll();
+    }, 5000);
 });
 
 $(document).ready(function() {
