@@ -101,7 +101,8 @@ ul.audits li.audit {
     background-color: #EEE;
     display: inline-block;
     width: 100%;
-    vertical-align: middle; }
+    vertical-align: middle;
+    box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.5); }
     ul.audits li.audit div.panel:after {
       display: table;
       content: '';
@@ -163,7 +164,8 @@ ul.audits li.audit {
     border-style: solid;
     border-radius: 50%;
     padding: 0.25em;
-    text-align: center; }
+    text-align: center;
+    box-shadow: 0 0 0.5em #000; }
     ul.audits li.audit div.scores:before {
       content: '';
       display: inline-block;

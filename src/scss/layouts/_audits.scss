@@ -52,6 +52,7 @@ ul.audits {
             display: inline-block;
             width: 100%;
             vertical-align: middle;
+            box-shadow: 0 0 0.25em rgba($black, 0.5);
 
             &:after {
                 display: table;
@@ -139,6 +140,7 @@ ul.audits {
             padding: 0.25em;
             @include enable-vertical-center();
             text-align: center;
+            box-shadow: 0 0 0.5em $black;
 
             ul {
                 font-size: 3em;
