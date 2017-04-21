@@ -38,6 +38,10 @@ window.addEventListener('load', function () {
         registerMouseMoveKillingScroll();
         registerWindowResizeKillingScroll();
     }, 30000);
+
+    setTimeout(function() {
+        location.reload(true);
+    }, 86400000);
 });
 
 $(document).ready(function() {
