@@ -1,6 +1,6 @@
 # Seemly
 
-A dashboard that ranks your site's Google Pagespeed Insight values. 
+A dashboard that ranks your site's Google Pagespeed Insight values.
 
 ## Getting Started
 
@@ -27,7 +27,7 @@ These instructions will help you set up Seemly.
 
 6. Bring up just the Couchbase container, running this command will return a container ID to use in Step 8:
 
-		docker run --rm -d -v $PWD/persistence:/opt/couchbase/var -p 8091:8091 couchbase:community-4.5.0
+		docker run -d -v $PWD/persistence:/opt/couchbase/var -p 8091:8091 couchbase:community-4.5.0
 
 7. Seed the Couchbase database with the authentication information you specified in `/app/config.json` either by visting http://localhost:8091 or running these `curl` commands, replacing everything in {} with values from `/app/config.json`:
 
