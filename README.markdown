@@ -46,6 +46,17 @@ These instructions will help you set up Seemly.
 
 2. Visit your Seemly install at [https://localhost](https://localhost).
 
+## Running commands
+
+While Seemly is running, you can issue commands to the application
+
+		docker exec seemly_app_1 ./app.js [command]
+
+Where [command] is one of the following:
+
+* audit-sites
+* delete-sites
+
 ## Authors
 
 * **Derek McBurney** - [dmcb](https://github.com/dmcb)
