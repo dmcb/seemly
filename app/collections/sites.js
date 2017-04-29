@@ -6,8 +6,9 @@ var request = require('request');
 var uuid = require('uuid');
 
 exports.auditSites = function(sites, callback) {
-    async.each(
+    async.eachLimit(
         sites,
+        1,
         function(site, callback) {
             request({
                 uri: 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?screenshot=true&url=' + site,
