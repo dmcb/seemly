@@ -208,8 +208,17 @@ async.retry({times: 10, interval: function(retryCount) {return 1000 * Math.pow(1
                                             // Assign previous ranks and set change and trend values
                                             for (var i in previousRank) {
                                                 var index = previousRank[i].rank-1;
-                                                auditArray[index]['rank_previous'] = parseInt(i)+1;
-                                                auditArray[index]['rank_change'] = (parseInt(i)+1) - previousRank[i].rank;
+
+                                                // Determine rank changes
+                                                if (auditArray[index]['new'] == 'new') {
+                                                    auditArray[index]['rank_previous'] = previousRank[i].rank;
+                                                    auditArray[index]['rank_change'] = 0;
+                                                }
+                                                else {
+                                                    auditArray[index]['rank_previous'] = parseInt(i)+1;
+                                                    auditArray[index]['rank_change'] = (parseInt(i)+1) - previousRank[i].rank;
+                                                }
+
                                                 if (auditArray[index]['rank_change'] > 0) {
                                                     auditArray[index]['rank_trend'] = 'positive';
                                                 }
