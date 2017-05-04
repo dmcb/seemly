@@ -22,19 +22,25 @@ exports.auditSites = function(sites, callback) {
                 }
                 else {
                     var id = uuid.v4();
-                    console.log('Audit successful');
                     var doc = JSON.parse(body);
-                    doc.date = new Date().getTime();
-                    doc.site = site;
-                    db.insert('audit::' + id, doc, function(error, result) {
-                        if (error) {
-                            console.error('Failed to save audit');
-                            callback();
-                        }
-                        else {
-                            callback();
-                        }
-                    });
+                    if (doc.error) {
+                        console.error('Audit error: ' + doc.error.message);
+                        callback();
+                    }
+                    else {
+                        doc.date = new Date().getTime();
+                        doc.site = site;
+                        db.insert('audit::' + id, doc, function(error, result) {
+                            if (error) {
+                                console.error('Failed to save audit');
+                                callback();
+                            }
+                            else {
+                                console.log('Audit successful');
+                                callback();
+                            }
+                        });
+                    }
                 }
             });
         },
